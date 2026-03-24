@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>আমার অ্যাকাউন্ট | পরিচিত বাজার</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans:['Hind Siliguri','sans-serif'], display:['Sora','sans-serif'] },
+          colors: { orange:{ 50:'#fff7ed',100:'#ffedd5',400:'#fb923c',500:'#f97316',600:'#ea580c' } }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family:'Hind Siliguri',sans-serif; }
+    h1,h2,.font-display { font-family:'Sora',sans-serif; }
+    .input-field { transition:border-color .2s,box-shadow .2s; }
+    .input-field:focus { outline:none; border-color:#f97316; box-shadow:0 0 0 3px rgba(249,115,22,.12); }
+    .tab-btn.active { color:#f97316; border-bottom-color:#f97316; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    .anim { animation:slideUp .45s ease both; }
+    .status-pending   { background:#fef3c7;color:#92400e; }
+    .status-confirmed { background:#dbeafe;color:#1e40af; }
+    .status-shipped   { background:#f3e8ff;color:#6d28d9; }
+    .status-delivered { background:#d1fae5;color:#065f46; }
+    .status-cancelled { background:#fee2e2;color:#991b1b; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-50">
+    <div class="bg-orange-500 h-1"></div>
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2">
+        <img src="../assets/images/logo.png" alt="লোগো" class="w-9 h-9 rounded-lg object-contain"
+             onerror="this.style.display='none'" />
+        <span class="font-display font-bold text-lg text-slate-800">
+          পরিচিত <span class="text-orange-500">বাজার</span>
+        </span>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="../index.html"
+           class="text-sm text-slate-500 hover:text-orange-500 transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-shop text-xs"></i> শপিং করুন
+        </a>
+        <button onclick="doLogout()"
+          class="text-sm text-red-400 hover:text-red-600 transition-colors flex items-center gap-1.5 border border-red-100 rounded-lg px-3 py-1.5 hover:bg-red-50">
+          <i class="fa-solid fa-right-from-bracket text-xs"></i> লগআউট
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+
+    <!-- Profile hero card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden mb-6 anim">
+      <div class="h-20 bg-gradient-to-r from-orange-500 to-orange-400 relative">
+        <div class="absolute inset-0 opacity-10"
+             style="background-image:radial-gradient(circle at 20% 50%,#fff 1px,transparent 1px),radial-gradient(circle at 80% 80%,#fff 1px,transparent 1px);background-size:30px 30px"></div>
+      </div>
+      <div class="px-6 pb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 -mt-10">
+          <!-- Avatar -->
+          <div class="w-20 h-20 rounded-2xl border-4 border-white shadow-md bg-orange-500 flex items-center justify-center flex-shrink-0"
+               style="font-family:'Sora',sans-serif">
+            <span class="text-white font-bold text-3xl" id="heroAvatar">?</span>
+          </div>
+          <div class="flex-1 pt-2 sm:pt-0">
+            <h1 class="font-display font-bold text-2xl text-slate-800" id="heroName">লোড হচ্ছে...</h1>
+            <p class="text-slate-400 text-sm mt-0.5" id="heroEmail">—</p>
+          </div>
+          <div class="flex gap-2">
+            <div class="text-center px-4 py-2 bg-orange-50 rounded-xl border border-orange-100">
+              <p class="font-display font-bold text-xl text-orange-500" id="heroOrderCount">0</p>
+              <p class="text-xs text-slate-400">অর্ডার</p>
+            </div>
+            <div class="text-center px-4 py-2 bg-slate-50 rounded-xl border border-slate-200">
+              <p class="font-display font-bold text-xl text-slate-700" id="heroMemberSince">—</p>
+              <p class="text-xs text-slate-400">যোগদান</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden anim" style="animation-delay:.1s">
+      <!-- Tab bar -->
+      <div class="flex border-b border-slate-100 px-6 overflow-x-auto">
+        <button onclick="switchTab('orders')" id="tab-orders"
+          class="tab-btn active flex items-center gap-2 py-4 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-bag-shopping"></i> আমার অর্ডার
+        </button>
+        <button onclick="switchTab('profile')" id="tab-profile"
+          class="tab-btn flex items-center gap-2 py-4 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-user"></i> প্রোফাইল সম্পাদনা
+        </button>
+        <button onclick="switchTab('security')" id="tab-security"
+          class="tab-btn flex items-center gap-2 py-4 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-shield-halved"></i> নিরাপত্তা
+        </button>
+      </div>
+
+      <!-- ── ORDERS TAB ─────────────────────────────────────── -->
+      <div id="panel-orders" class="p-6">
+        <div id="orders-loading" class="text-center py-10">
+          <div class="inline-block w-8 h-8 border-3 border-orange-200 border-t-orange-500 rounded-full animate-spin" style="border-width:3px"></div>
+          <p class="text-slate-400 text-sm mt-3">অর্ডার লোড হচ্ছে...</p>
+        </div>
+        <div id="orders-empty" class="hidden text-center py-12">
+          <div class="text-5xl mb-3">📦</div>
+          <p class="font-display font-semibold text-lg text-slate-700 mb-1">কোনো অর্ডার নেই</p>
+          <p class="text-slate-400 text-sm mb-5">এখনো কোনো পণ্য অর্ডার করেননি।</p>
+          <a href="../index.html#products"
+             class="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-all">
+            <i class="fa-solid fa-bag-shopping"></i> পণ্য কিনুন
+          </a>
+        </div>
+        <div id="orders-list" class="hidden space-y-3"></div>
+      </div>
+
+      <!-- ── PROFILE TAB ────────────────────────────────────── -->
+      <div id="panel-profile" class="hidden p-6">
+        <div id="profile-alert" class="hidden mb-5 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">পুরো নাম <span class="text-red-400">*</span></label>
+            <div class="relative">
+              <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+              <input id="pf-name" type="text"
+                class="input-field w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white" />
+            </div>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">ইমেইল</label>
+            <div class="relative">
+              <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+              <input id="pf-email" type="email" disabled
+                class="w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-100 text-slate-400 cursor-not-allowed" />
+            </div>
+            <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-lock text-xs mr-1"></i>ইমেইল পরিবর্তন করা যাবে না।</p>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">ফোন নম্বর</label>
+            <div class="flex rounded-xl overflow-hidden border-2 border-slate-200 focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-100 transition-all bg-slate-50 focus-within:bg-white">
+              <div class="flex items-center gap-1 px-3 bg-slate-100 border-r border-slate-200 flex-shrink-0">
+                <span>🇧🇩</span><span class="text-sm font-semibold text-slate-600">+88</span>
+              </div>
+              <input id="pf-phone" type="tel" placeholder="01XXXXXXXXX"
+                class="flex-1 px-4 py-3 text-sm focus:outline-none bg-transparent" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">জেলা</label>
+            <select id="pf-district"
+              class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white appearance-none">
+              <option value="">বেছে নিন</option>
+              <option>ঢাকা</option><option>চট্টগ্রাম</option><option>রাজশাহী</option>
+              <option>খুলনা</option><option>বরিশাল</option><option>সিলেট</option>
+              <option>রংপুর</option><option>ময়মনসিংহ</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">থানা</label>
+            <input id="pf-thana" type="text" placeholder="থানার নাম"
+              class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">ডেলিভারি ঠিকানা</label>
+            <textarea id="pf-address" rows="3" placeholder="বাড়ি নম্বর, রাস্তা, এলাকা..."
+              class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white resize-none"></textarea>
+          </div>
+        </div>
+        <div class="flex justify-end mt-5">
+          <button onclick="saveProfile()"
+            class="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-display font-bold rounded-xl transition-all shadow-md shadow-orange-100 flex items-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i> পরিবর্তন সংরক্ষণ করুন
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SECURITY TAB ───────────────────────────────────── -->
+      <div id="panel-security" class="hidden p-6">
+        <div id="sec-alert" class="hidden mb-5 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2"></div>
+
+        <div class="max-w-md space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">বর্তমান পাসওয়ার্ড <span class="text-red-400">*</span></label>
+            <div class="relative">
+              <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+              <input id="sec-cur" type="password" placeholder="••••••••"
+                class="input-field w-full pl-11 pr-12 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white" />
+              <button type="button" onclick="toggleVis('sec-cur','eyeC')"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-500">
+                <i class="fa-solid fa-eye" id="eyeC"></i>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">নতুন পাসওয়ার্ড <span class="text-red-400">*</span></label>
+            <div class="relative">
+              <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+              <input id="sec-new" type="password" placeholder="কমপক্ষে ৬ অক্ষর"
+                class="input-field w-full pl-11 pr-12 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white" />
+              <button type="button" onclick="toggleVis('sec-new','eyeN')"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-500">
+                <i class="fa-solid fa-eye" id="eyeN"></i>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">নতুন পাসওয়ার্ড নিশ্চিত করুন <span class="text-red-400">*</span></label>
+            <div class="relative">
+              <i class="fa-solid fa-shield-halved absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+              <input id="sec-conf" type="password" placeholder="আবার লিখুন"
+                class="input-field w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white" />
+            </div>
+          </div>
+          <button onclick="changePassword()"
+            class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-display font-bold rounded-xl transition-all shadow-md shadow-orange-100 flex items-center justify-center gap-2 mt-2">
+            <i class="fa-solid fa-shield-halved"></i> পাসওয়ার্ড পরিবর্তন করুন
+          </button>
+        </div>
+
+        <!-- Account info -->
+        <div class="mt-8 pt-6 border-t border-slate-100">
+          <h3 class="font-display font-semibold text-slate-700 mb-3 text-sm">অ্যাকাউন্ট তথ্য</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+              <p class="text-xs text-slate-400 mb-0.5">যোগদানের তারিখ</p>
+              <p class="text-sm font-semibold text-slate-700" id="sec-joined">—</p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+              <p class="text-xs text-slate-400 mb-0.5">শেষ লগইন</p>
+              <p class="text-sm font-semibold text-slate-700" id="sec-lastlogin">—</p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+              <p class="text-xs text-slate-400 mb-0.5">অ্যাকাউন্ট আইডি</p>
+              <p class="text-sm font-semibold text-slate-700 font-mono" id="sec-id">—</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const API   = window.location.origin + '/api';
+    const TOKEN = localStorage.getItem('pb_user_token');
+
+    // Auth guard
+    if (!TOKEN) {
+      sessionStorage.setItem('pb_redirect_after_login', window.location.href);
+      window.location.replace('./login.html');
+    }
+
+    let currentUser = null;
+
+    /* ── Load user + populate all tabs ──────────────── */
+    async function init() {
+      try {
+        const res  = await fetch(`${API}/auth/me`, { headers:{ Authorization:'Bearer '+TOKEN } });
+        const data = await res.json();
+        if (!data.success) { doLogout(); return; }
+        currentUser = data.user;
+        localStorage.setItem('pb_user', JSON.stringify(currentUser));
+        populateHero(currentUser);
+        populateProfileForm(currentUser);
+        loadOrders();
+      } catch {
+        doLogout();
+      }
+    }
+
+    function populateHero(u) {
+      const name = u.fullName || u.full_name || '';
+      document.getElementById('heroAvatar').textContent    = name.charAt(0).toUpperCase() || '?';
+      document.getElementById('heroName').textContent      = name;
+      document.getElementById('heroEmail').textContent     = u.email || '';
+      document.getElementById('sec-joined').textContent    = fmtDate(u.createdAt);
+      document.getElementById('sec-lastlogin').textContent = u.lastLogin ? fmtDate(u.lastLogin) : 'প্রথমবার';
+      document.getElementById('sec-id').textContent        = '#' + u.id;
+    }
+
+    function populateProfileForm(u) {
+      document.getElementById('pf-name').value     = u.fullName || u.full_name || '';
+      document.getElementById('pf-email').value    = u.email    || '';
+      document.getElementById('pf-phone').value    = u.phone    || '';
+      document.getElementById('pf-district').value = u.district || '';
+      document.getElementById('pf-thana').value    = u.thana    || '';
+      document.getElementById('pf-address').value  = u.address  || '';
+    }
+
+    function fmtDate(iso) {
+      return new Date(iso).toLocaleDateString('bn-BD', { day:'2-digit', month:'short', year:'numeric' });
+    }
+
+    /* ── Load orders ─────────────────────────────────── */
+    async function loadOrders() {
+      try {
+        const res  = await fetch(`${API}/auth/orders`, { headers:{ Authorization:'Bearer '+TOKEN } });
+        const data = await res.json();
+        document.getElementById('orders-loading').classList.add('hidden');
+
+        if (!data.success || !data.data.length) {
+          document.getElementById('orders-empty').classList.remove('hidden');
+          document.getElementById('heroOrderCount').textContent = 0;
+          return;
+        }
+
+        document.getElementById('heroOrderCount').textContent = data.data.length;
+        document.getElementById('orders-list').classList.remove('hidden');
+        renderOrders(data.data);
+      } catch {
+        document.getElementById('orders-loading').innerHTML =
+          '<p class="text-red-400 text-sm text-center py-6">অর্ডার লোড করতে সমস্যা হয়েছে।</p>';
+      }
+    }
+
+    const STATUS_COLOR = { pending:'#f59e0b',confirmed:'#3b82f6',shipped:'#8b5cf6',delivered:'#22c55e',cancelled:'#ef4444' };
+    const STATUS_LABEL = { pending:'অপেক্ষারত',confirmed:'নিশ্চিত',shipped:'পাঠানো হয়েছে',delivered:'ডেলিভারি সম্পন্ন',cancelled:'বাতিল' };
+
+    function renderOrders(orders) {
+      document.getElementById('orders-list').innerHTML = orders.map(o => `
+        <div class="bg-white border border-slate-100 rounded-2xl p-4 hover:shadow-md transition-shadow">
+          <div class="flex items-start justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                ${o.product_image
+                  ? `<img src="${o.product_image}" alt="${o.productName}" class="w-full h-full object-contain p-1"
+                        onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-jar text-orange-400\\'></i>'" />`
+                  : '<i class="fa-solid fa-jar text-orange-400"></i>'}
+              </div>
+              <div class="min-w-0">
+                <p class="font-semibold text-slate-800 text-sm truncate">${o.productName}</p>
+                <p class="text-xs text-slate-400 mt-0.5 font-mono">${o.orderRef}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0">
+              <span class="status-${o.status} text-xs font-semibold px-3 py-1 rounded-full">
+                ${STATUS_LABEL[o.status] || o.status}
+              </span>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-3 mt-3 pt-3 border-t border-slate-100">
+            <div>
+              <p class="text-xs text-slate-400">পরিমাণ</p>
+              <p class="text-sm font-semibold text-slate-700">${o.quantity} ${o.product_unit || ''}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400">মোট মূল্য</p>
+              <p class="text-sm font-bold text-orange-500">৳${parseFloat(o.totalPrice).toLocaleString('bn-BD')}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400">তারিখ</p>
+              <p class="text-sm font-semibold text-slate-700">${fmtDate(o.createdAt)}</p>
+            </div>
+          </div>
+          ${o.address ? `<p class="text-xs text-slate-400 mt-2 flex items-start gap-1"><i class="fa-solid fa-location-dot text-orange-400 mt-0.5 flex-shrink-0"></i>${o.address}</p>` : ''}
+        </div>`).join('');
+    }
+
+    /* ── Tab switching ───────────────────────────────── */
+    function switchTab(tab) {
+      ['orders','profile','security'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
+        document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== tab);
+      });
+    }
+
+    /* ── Save profile ────────────────────────────────── */
+    async function saveProfile() {
+      const alertEl = document.getElementById('profile-alert');
+      alertEl.classList.add('hidden');
+      try {
+        const res  = await fetch(`${API}/auth/profile`, {
+          method: 'PUT',
+          headers: { 'Content-Type':'application/json', Authorization:'Bearer '+TOKEN },
+          body: JSON.stringify({
+            fullName: document.getElementById('pf-name').value.trim()     || undefined,
+            phone:    document.getElementById('pf-phone').value.trim()    || undefined,
+            district: document.getElementById('pf-district').value        || undefined,
+            thana:    document.getElementById('pf-thana').value.trim()    || undefined,
+            address:  document.getElementById('pf-address').value.trim()  || undefined,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          currentUser = data.user;
+          localStorage.setItem('pb_user', JSON.stringify(data.user));
+          populateHero(data.user);
+          alertEl.className = 'mb-5 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2 bg-green-50 border border-green-200 text-green-700';
+          alertEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>' + data.message;
+        } else {
+          alertEl.className = 'mb-5 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2 bg-red-50 border border-red-200 text-red-600';
+          alertEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>' + (data.message || 'সমস্যা হয়েছে।');
+        }
+        alertEl.classList.remove('hidden');
+      } catch {
+        alertEl.className = 'mb-5 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2 bg-red-50 border border-red-200 text-red-600';
+        alertEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>সার্ভারে সমস্যা।';
+        alertEl.classList.remove('hidden');
+      }
+    }
+
+    /* ── Change password ─────────────────────────────── */
+    async function changePassword() {
+      const alertEl = document.getElementById('sec-alert');
+      alertEl.classList.add('hidden');
+      const cur  = document.getElementById('sec-cur').value;
+      const nw   = document.getElementById('sec-new').value;
+      const conf = document.getElementById('sec-conf').value;
+
+      if (!cur || !nw || !conf) {
+        showSecAlert('সব ঘর পূরণ করুন।', false); return;
+      }
+      if (nw.length < 6) { showSecAlert('নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।', false); return; }
+      if (nw !== conf)   { showSecAlert('নতুন পাসওয়ার্ড দুটো মিলছে না।', false); return; }
+
+      try {
+        const res  = await fetch(`${API}/auth/change-password`, {
+          method: 'PUT',
+          headers: { 'Content-Type':'application/json', Authorization:'Bearer '+TOKEN },
+          body: JSON.stringify({ currentPassword: cur, newPassword: nw }),
+        });
+        const data = await res.json();
+        showSecAlert(data.message, data.success);
+        if (data.success) {
+          document.getElementById('sec-cur').value  = '';
+          document.getElementById('sec-new').value  = '';
+          document.getElementById('sec-conf').value = '';
+        }
+      } catch { showSecAlert('সার্ভারে সমস্যা।', false); }
+    }
+
+    function showSecAlert(msg, ok) {
+      const el = document.getElementById('sec-alert');
+      el.className = `mb-5 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2 ${
+        ok ? 'bg-green-50 border border-green-200 text-green-700'
+           : 'bg-red-50 border border-red-200 text-red-600'}`;
+      el.innerHTML = `<i class="fa-solid ${ok ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i>${msg}`;
+      el.classList.remove('hidden');
+    }
+
+    function toggleVis(inputId, iconId) {
+      const el = document.getElementById(inputId);
+      const ic = document.getElementById(iconId);
+      el.type      = el.type === 'password' ? 'text' : 'password';
+      ic.className = el.type === 'text' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+    }
+
+    function doLogout() {
+      localStorage.removeItem('pb_user_token');
+      localStorage.removeItem('pb_user');
+      window.location.replace('../index.html');
+    }
+
+    init();
+  </script>
+</body>
+</html>

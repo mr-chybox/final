@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <rect width="300" height="300" rx="20" fill="#fdf6ec"/>
+  <text x="150" y="155" font-size="90" text-anchor="middle">🫙</text>
+  <text x="150" y="200" font-family="sans-serif" font-size="13" fill="#aaa" text-anchor="middle">cold-pressed-oil.jpg</text>
+</svg>

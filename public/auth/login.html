@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>লগইন | পরিচিত বাজার</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Hind Siliguri','sans-serif'], display: ['Sora','sans-serif'] },
+          colors: { orange: { 50:'#fff7ed',100:'#ffedd5',400:'#fb923c',500:'#f97316',600:'#ea580c' } }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family:'Hind Siliguri',sans-serif; }
+    h1,h2,.font-display { font-family:'Sora',sans-serif; }
+    .input-field:focus { outline:none; border-color:#f97316; box-shadow:0 0 0 3px rgba(249,115,22,.12); }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .anim { animation:slideUp .5s ease both; }
+    .bg-pattern {
+      background-color:#1c2b1e;
+      background-image: radial-gradient(circle at 20% 50%, rgba(224,123,46,.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(58,125,68,.2) 0%, transparent 40%),
+                        radial-gradient(circle at 60% 80%, rgba(224,123,46,.1) 0%, transparent 40%);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex">
+
+  <!-- Left decorative panel (desktop) -->
+  <div class="hidden lg:flex flex-col justify-between bg-pattern w-[44%] p-12 relative overflow-hidden">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 z-10">
+      <img src="../assets/images/logo.png" alt="লোগো" class="w-12 h-12 rounded-xl object-contain"
+           onerror="this.style.display='none'" />
+      <div>
+        <p class="text-white/40 text-xs font-display tracking-widest uppercase">Poricito Bazar</p>
+        <p class="text-white font-display font-bold text-xl">পরিচিত বাজার</p>
+      </div>
+    </div>
+
+    <!-- Center text -->
+    <div class="z-10">
+      <h2 class="font-display font-bold text-4xl text-white leading-tight mb-4">
+        আপনার পরিবারের<br/>
+        <span class="text-orange-400">বিশ্বস্ত বাজার</span>
+      </h2>
+      <p class="text-white/60 text-lg leading-relaxed">
+        খাঁটি ও স্বাস্থ্যকর পণ্য — সরাসরি বিশ্বস্ত উৎস থেকে আপনার দরজায়।
+      </p>
+      <div class="flex gap-6 mt-8">
+        <div class="text-center">
+          <p class="font-display font-bold text-2xl text-orange-400">৫০০+</p>
+          <p class="text-white/50 text-xs mt-1">সন্তুষ্ট গ্রাহক</p>
+        </div>
+        <div class="w-px bg-white/10"></div>
+        <div class="text-center">
+          <p class="font-display font-bold text-2xl text-orange-400">৩০+</p>
+          <p class="text-white/50 text-xs mt-1">বিশুদ্ধ পণ্য</p>
+        </div>
+        <div class="w-px bg-white/10"></div>
+        <div class="text-center">
+          <p class="font-display font-bold text-2xl text-orange-400">১০০%</p>
+          <p class="text-white/50 text-xs mt-1">খাঁটি গ্যারান্টি</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <p class="text-white/30 text-sm z-10">&copy; 2024 পরিচিত বাজার। সকল অধিকার সংরক্ষিত।</p>
+
+    <!-- Decorative circles -->
+    <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-orange-500/5 border border-orange-500/10"></div>
+    <div class="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-green-500/5 border border-green-500/10"></div>
+  </div>
+
+  <!-- Right: Login form -->
+  <div class="flex-1 flex items-center justify-center p-6 bg-slate-50">
+    <div class="w-full max-w-md anim">
+
+      <!-- Mobile logo -->
+      <div class="flex items-center gap-2 mb-8 lg:hidden">
+        <img src="../assets/images/logo.png" alt="লোগো" class="w-9 h-9 rounded-lg object-contain"
+             onerror="this.style.display='none'" />
+        <span class="font-display font-bold text-xl text-slate-800">পরিচিত <span class="text-orange-500">বাজার</span></span>
+      </div>
+
+      <!-- Heading -->
+      <div class="mb-8">
+        <h1 class="font-display font-bold text-3xl text-slate-800 mb-2">স্বাগতম! 👋</h1>
+        <p class="text-slate-500">আপনার অ্যাকাউন্টে লগইন করুন</p>
+      </div>
+
+      <!-- Error -->
+      <div id="error-box" class="hidden mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2 text-sm text-red-600">
+        <i class="fa-solid fa-circle-exclamation mt-0.5 flex-shrink-0"></i>
+        <span id="error-msg"></span>
+      </div>
+
+      <!-- Form -->
+      <div class="space-y-4">
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">ইমেইল <span class="text-red-400">*</span></label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+            <input id="email" type="email" placeholder="example@email.com"
+              class="input-field w-full pl-11 pr-4 py-3.5 border-2 border-slate-200 rounded-xl text-sm bg-white transition-all"
+              onkeydown="if(event.key==='Enter')doLogin()" />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-sm font-semibold text-slate-700">পাসওয়ার্ড <span class="text-red-400">*</span></label>
+            <a href="#" class="text-xs text-orange-500 hover:underline">পাসওয়ার্ড ভুলে গেছেন?</a>
+          </div>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+            <input id="password" type="password" placeholder="••••••••"
+              class="input-field w-full pl-11 pr-12 py-3.5 border-2 border-slate-200 rounded-xl text-sm bg-white transition-all"
+              onkeydown="if(event.key==='Enter')doLogin()" />
+            <button type="button" onclick="togglePass('password','eye1')"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-500 transition-colors">
+              <i class="fa-solid fa-eye" id="eye1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember me -->
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="remember" class="w-4 h-4 accent-orange-500 rounded cursor-pointer" />
+          <label for="remember" class="text-sm text-slate-500 cursor-pointer">লগইন মনে রাখুন</label>
+        </div>
+
+        <!-- Submit -->
+        <button id="login-btn" onclick="doLogin()"
+          class="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-display font-bold rounded-xl transition-all shadow-lg shadow-orange-200 flex items-center justify-center gap-2 mt-2">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          লগইন করুন
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-3 my-6">
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400">অথবা</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+      </div>
+
+      <!-- Register link -->
+      <p class="text-center text-sm text-slate-500">
+        নতুন অ্যাকাউন্ট নেই?
+        <a href="./register.html" class="text-orange-500 font-semibold hover:underline ml-1">রেজিস্ট্রেশন করুন</a>
+      </p>
+
+      <!-- Back to site -->
+      <div class="text-center mt-4">
+        <a href="../index.html" class="text-xs text-slate-400 hover:text-orange-500 transition-colors">
+          <i class="fa-solid fa-arrow-left mr-1"></i> মূল সাইটে ফিরুন
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin + '/api';
+
+    // Already logged in?
+    if (localStorage.getItem('pb_user_token')) {
+      window.location.replace('../index.html');
+    }
+
+    function togglePass(inputId, iconId) {
+      const el = document.getElementById(inputId);
+      const ic = document.getElementById(iconId);
+      el.type   = el.type === 'password' ? 'text' : 'password';
+      ic.className = el.type === 'text' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+    }
+
+    function showError(msg) {
+      document.getElementById('error-msg').textContent = msg;
+      document.getElementById('error-box').classList.remove('hidden');
+    }
+    function hideError() { document.getElementById('error-box').classList.add('hidden'); }
+
+    async function doLogin() {
+      hideError();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = document.getElementById('login-btn');
+
+      if (!email || !password) { showError('ইমেইল ও পাসওয়ার্ড দিন।'); return; }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span> লগইন হচ্ছে...';
+
+      try {
+        const res  = await fetch(`${API}/auth/login`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          localStorage.setItem('pb_user_token', data.token);
+          localStorage.setItem('pb_user',       JSON.stringify(data.user));
+          // Redirect to previous page or home
+          const redirect = sessionStorage.getItem('pb_redirect_after_login') || '../index.html';
+          sessionStorage.removeItem('pb_redirect_after_login');
+          window.location.replace(redirect);
+        } else {
+          showError(data.message || 'লগইন ব্যর্থ হয়েছে।');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> লগইন করুন';
+        }
+      } catch {
+        showError('সার্ভারে সংযোগ করা যাচ্ছে না।');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> লগইন করুন';
+      }
+    }
+  </script>
+</body>
+</html>

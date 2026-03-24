@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>অ্যাডমিন লগইন | পরিচিত বাজার</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    :root {
+      --orange:      #e07b2e;
+      --orange-dark: #c4661c;
+      --green:       #3a7d44;
+      --cream:       #fdf6ec;
+      --border:      #e8ddd0;
+      --text:        #1a1a1a;
+      --muted:       #6b7280;
+      --font-bn:     'Hind Siliguri', sans-serif;
+      --font-en:     'Poppins', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-bn);
+      background: linear-gradient(135deg, #1c2b1e 0%, #2d4a32 50%, #1c2b1e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative background circles */
+    body::before, body::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.06;
+      background: var(--orange);
+    }
+    body::before { width: 500px; height: 500px; top: -150px; right: -100px; }
+    body::after  { width: 400px; height: 400px; bottom: -120px; left: -80px; }
+
+    .login-card {
+      background: #fff;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Card header strip */
+    .login-header {
+      background: linear-gradient(135deg, #1c2b1e, #3a7d44);
+      padding: 36px 32px 28px;
+      text-align: center;
+    }
+    .login-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,0.1);
+      padding: 4px;
+    }
+    .login-header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .login-header p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+      font-family: var(--font-en);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Form body */
+    .login-body { padding: 32px; }
+
+    .form-group { margin-bottom: 20px; }
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 12px 14px 12px 40px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: var(--font-bn);
+      font-size: 0.95rem;
+      color: var(--text);
+      transition: border-color 0.25s, box-shadow 0.25s;
+      outline: none;
+      background: var(--cream);
+    }
+    input:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(224,123,46,0.15);
+      background: #fff;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 0;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .toggle-password:hover { color: var(--orange); }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-bn);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(224,123,46,0.4);
+      margin-top: 8px;
+    }
+    .btn-login:hover:not(:disabled) {
+      background: var(--orange-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(224,123,46,0.5);
+    }
+    .btn-login:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .error-box {
+      background: #fff0f0;
+      border: 1px solid #fca5a5;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #dc2626;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .error-box.show { display: flex; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--orange); }
+    .back-link i { margin-right: 4px; }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <div class="login-header">
+      <img src="../assets/images/logo.png" alt="পরিচিত বাজার লোগো" class="login-logo"
+           onerror="this.style.display='none'" />
+      <h1>পরিচিত বাজার</h1>
+      <p>Admin Dashboard</p>
+    </div>
+
+    <div class="login-body">
+      <div class="error-box" id="errorBox">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span id="errorMsg">ব্যবহারকারীর নাম বা পাসওয়ার্ড ভুল।</span>
+      </div>
+
+      <div class="form-group">
+        <label for="username">ব্যবহারকারীর নাম</label>
+        <div class="input-wrapper">
+          <i class="bi bi-person-fill"></i>
+          <input type="text" id="username" placeholder="admin" autocomplete="username" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">পাসওয়ার্ড</label>
+        <div class="input-wrapper">
+          <i class="bi bi-lock-fill"></i>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+          <button class="toggle-password" id="togglePwd" type="button" aria-label="পাসওয়ার্ড দেখুন">
+            <i class="bi bi-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-login" id="loginBtn">
+        <div class="spinner" id="loginSpinner"></div>
+        <i class="bi bi-shield-lock-fill" id="loginIcon"></i>
+        <span id="loginLabel">লগইন করুন</span>
+      </button>
+
+      <a href="../index.html" class="back-link">
+        <i class="bi bi-arrow-left"></i>মূল সাইটে ফিরে যান
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin + '/api';
+
+    // ── Redirect if already logged in ──────────────────────────
+    if (localStorage.getItem('pb_admin_token')) {
+      window.location.replace('./dashboard.html');
+    }
+
+    // ── Toggle password visibility ──────────────────────────────
+    document.getElementById('togglePwd').addEventListener('click', () => {
+      const pwd     = document.getElementById('password');
+      const icon    = document.getElementById('eyeIcon');
+      const visible = pwd.type === 'text';
+      pwd.type      = visible ? 'password' : 'text';
+      icon.className = visible ? 'bi bi-eye' : 'bi bi-eye-slash';
+    });
+
+    // ── Login handler ───────────────────────────────────────────
+    async function doLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorBox = document.getElementById('errorBox');
+      const errorMsg = document.getElementById('errorMsg');
+      const btn      = document.getElementById('loginBtn');
+      const spinner  = document.getElementById('loginSpinner');
+      const icon     = document.getElementById('loginIcon');
+      const label    = document.getElementById('loginLabel');
+
+      errorBox.classList.remove('show');
+
+      if (!username || !password) {
+        errorMsg.textContent = 'ব্যবহারকারীর নাম এবং পাসওয়ার্ড দিন।';
+        errorBox.classList.add('show');
+        return;
+      }
+
+      // Loading state
+      btn.disabled     = true;
+      spinner.style.display = 'block';
+      icon.style.display    = 'none';
+      label.textContent     = 'লগইন হচ্ছে...';
+
+      try {
+        const res  = await fetch(`${API}/admin/login`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+
+        if (data.success && data.token) {
+          localStorage.setItem('pb_admin_token',    data.token);
+          localStorage.setItem('pb_admin_username', data.admin.username);
+          window.location.replace('./dashboard.html');
+        } else {
+          throw new Error(data.message || 'লগইন ব্যর্থ হয়েছে।');
+        }
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        errorBox.classList.add('show');
+        btn.disabled          = false;
+        spinner.style.display = 'none';
+        icon.style.display    = 'inline';
+        label.textContent     = 'লগইন করুন';
+      }
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', doLogin);
+
+    // Allow Enter key to submit
+    ['username','password'].forEach(id =>
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+      })
+    );
+  </script>
+</body>
+</html>

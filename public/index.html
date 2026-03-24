@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="পরিচিত বাজার - আপনার পরিবারের জন্য খাঁটি ও স্বাস্থ্যকর পণ্য"
+    />
+    <title>পরিচিত বাজার | Poricito Bazar</title>
+
+    <!-- Google Fonts: Hind Siliguri for Bengali, Poppins for Latin -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <!-- ═══════════════════════════════════════════════════════
+         HEADER / NAVBAR
+    ═══════════════════════════════════════════════════════ -->
+    <header class="site-header sticky-top">
+      <nav class="navbar navbar-expand-lg" id="mainNavbar">
+        <div class="container">
+
+          <!-- LOGO -->
+          <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
+            <!--
+              LOGO IMAGE — Place your logo at:
+              ./assets/images/logo.png
+              Recommended size: 60×60 px (square or circular)
+            -->
+            <img
+              src="./assets/images/logo.png"
+              alt="পরিচিত বাজার লোগো"
+              class="navbar-logo"
+              onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';"
+            />
+            <span class="logo-fallback" id="logoFallback">🛍️</span>
+            <div class="brand-text">
+              <span class="brand-en">PORICITO BAZAR</span>
+              <span class="brand-bn">পরিচিত <strong>বাজার</strong></span>
+            </div>
+          </a>
+
+          <!-- HAMBURGER (Mobile) -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu"
+            aria-controls="navbarMenu"
+            aria-expanded="false"
+            aria-label="মেনু"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- NAV LINKS + CART -->
+          <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+              <li class="nav-item">
+                <a class="nav-link active" href="#home">হোম</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#products"
+                  id="productsDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  পণ্য
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+                  <li><a class="dropdown-item" href="#products">সকল পণ্য</a></li>
+                  <li><a class="dropdown-item" href="#products">তেল</a></li>
+                  <li><a class="dropdown-item" href="#products">মশলা</a></li>
+                  <li><a class="dropdown-item" href="#products">চিনি ও গুড়</a></li>
+                  <li><a class="dropdown-item" href="#products">মধু</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#about">আমাদের সম্পর্কে</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#contact">যোগাযোগ</a>
+              </li>
+            </ul>
+
+            <!-- AUTH + CART BUTTONS -->
+            <div class="d-flex align-items-center gap-2">
+
+              <!-- Guest buttons (shown when not logged in) -->
+              <div id="guestButtons" class="d-flex gap-2">
+                <a href="./auth/login.html"
+                   class="btn btn-outline-orange btn-sm px-3 py-2"
+                   style="border:2px solid #e07b2e;color:#e07b2e;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;display:flex;align-items:center;gap:5px">
+                  <i class="bi bi-box-arrow-in-right"></i> লগইন
+                </a>
+                <a href="./auth/register.html"
+                   class="btn btn-sm px-3 py-2"
+                   style="background:#e07b2e;color:#fff;border:none;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;display:flex;align-items:center;gap:5px">
+                  <i class="bi bi-person-plus-fill"></i> রেজিস্ট্রেশন
+                </a>
+              </div>
+
+              <!-- Logged-in user menu (hidden until logged in) -->
+              <div id="userMenu" class="d-none" style="position:relative">
+                <button id="userMenuBtn"
+                  class="btn d-flex align-items-center gap-2"
+                  style="background:#fff4eb;border:2px solid #f0d9c8;border-radius:10px;padding:6px 14px;font-weight:600;font-size:0.88rem;color:#1a1a1a"
+                  onclick="toggleUserDropdown()">
+                  <div style="width:28px;height:28px;background:#e07b2e;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem;font-weight:700" id="userAvatar">U</div>
+                  <span id="userDisplayName">ব্যবহারকারী</span>
+                  <i class="bi bi-chevron-down text-muted" style="font-size:0.7rem"></i>
+                </button>
+                <!-- Dropdown -->
+                <div id="userDropdown"
+                  style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e8ddd0;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:200px;z-index:999;overflow:hidden">
+                  <div style="padding:14px 16px;border-bottom:1px solid #f0ece8;background:#fff7f0">
+                    <p style="font-weight:700;font-size:0.9rem;color:#1a1a1a;margin:0" id="dropdownName">নাম</p>
+                    <p style="font-size:0.75rem;color:#888;margin:2px 0 0" id="dropdownEmail">email</p>
+                  </div>
+                  <div style="padding:6px">
+                    <a href="./auth/profile.html"
+                       style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#1a1a1a;text-decoration:none;font-size:0.87rem;font-weight:500"
+                       onmouseover="this.style.background='#fff7f0'" onmouseout="this.style.background=''" target="_self">
+                      <i class="bi bi-person-circle text-warning"></i> প্রোফাইল
+                    </a>
+                    <a href="./auth/profile.html"
+                       style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#1a1a1a;text-decoration:none;font-size:0.87rem;font-weight:500"
+                       onmouseover="this.style.background='#fff7f0'" onmouseout="this.style.background=''">
+                      <i class="bi bi-bag-check text-warning"></i> আমার অর্ডার
+                    </a>
+                    <div style="border-top:1px solid #f0ece8;margin:4px 0"></div>
+                    <a href="#" onclick="doLogout();return false"
+                       style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#dc3545;text-decoration:none;font-size:0.87rem;font-weight:500"
+                       onmouseover="this.style.background='#fff0f0'" onmouseout="this.style.background=''">
+                      <i class="bi bi-box-arrow-right"></i> লগআউট
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cart button -->
+              <button
+                class="btn btn-cart"
+                id="cartBtn"
+                aria-label="শপিং কার্ট"
+              >
+                <i class="bi bi-cart3"></i>
+                <span>কার্ট</span>
+                <span class="cart-badge" id="cartCount">0</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════
+         HERO SECTION
+    ═══════════════════════════════════════════════════════ -->
+    <section class="hero-section" id="home">
+      <!--
+        HERO BACKGROUND IMAGE — Place your image at:
+        ./assets/images/hero-bg.jpg
+        Recommended: Wide landscape photo of fields/nature
+        Size: 1920×700 px minimum
+      -->
+      <div class="hero-bg-wrapper">
+        <img
+          src="./assets/images/hero-bg.jpg"
+          alt="হিরো ব্যাকগ্রাউন্ড"
+          class="hero-bg-image"
+          onerror="this.parentElement.classList.add('hero-bg-fallback')"
+        />
+        <div class="hero-overlay"></div>
+      </div>
+
+      <div class="container hero-container">
+        <!-- LEFT: TEXT CONTENT -->
+        <div class="hero-content">
+          <p class="hero-tagline animate-fade-up">🌿 ১০০% প্রাকৃতিক ও বিশুদ্ধ</p>
+          <h1 class="hero-title animate-fade-up delay-1">
+            আপনার পরিবারের জন্য<br />
+            <span class="highlight-khati">খাঁটি</span> ও
+            <span class="highlight-healthy">স্বাস্থ্যকর</span> পণ্য
+          </h1>
+          <p class="hero-subtitle animate-fade-up delay-2">
+            বিশ্বস্ত প্রতিষ্ঠান থেকে সংগ্রহ করুন
+          </p>
+          <div class="hero-actions animate-fade-up delay-3">
+            <a href="#products" class="btn btn-hero-primary">
+              <i class="bi bi-bag-fill"></i> পণ্য দেখুন
+            </a>
+            <a href="#about" class="btn btn-hero-secondary">
+              আমাদের সম্পর্কে <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+          <div class="hero-stats animate-fade-up delay-4">
+            <div class="stat-item">
+              <strong>৫০০+</strong>
+              <span>সন্তুষ্ট গ্রাহক</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <strong>৩০+</strong>
+              <span>বিশুদ্ধ পণ্য</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <strong>১০০%</strong>
+              <span>খাঁটি গ্যারান্টি</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: INGREDIENT IMAGES -->
+        <div class="hero-images-wrapper">
+          <!--
+            INGREDIENT IMAGES — Place your images at the paths below.
+            These float over the hero and are absolutely positioned.
+            PNG files with transparent backgrounds work best.
+
+            hero-mustard.png   → Mustard flowers / mustard seeds
+            hero-coconut.png   → Coconut (halved)
+            hero-turmeric.png  → Turmeric roots / sliced
+            hero-sugarcane.png → Sugarcane stalks
+          -->
+          <img
+            src="./assets/images/hero-mustard.png"
+            alt="সরিষা ফুল"
+            class="hero-ingredient ingredient-mustard"
+            onerror="this.style.opacity='0'"
+          />
+          <img
+            src="./assets/images/hero-coconut.png"
+            alt="নারিকেল"
+            class="hero-ingredient ingredient-coconut"
+            onerror="this.style.opacity='0'"
+          />
+          <img
+            src="./assets/images/hero-turmeric.png"
+            alt="হলুদ"
+            class="hero-ingredient ingredient-turmeric"
+            onerror="this.style.opacity='0'"
+          />
+          <img
+            src="./assets/images/hero-sugarcane.png"
+            alt="আখ"
+            class="hero-ingredient ingredient-sugarcane"
+            onerror="this.style.opacity='0'"
+          />
+
+          <!-- Decorative circle rings behind the images -->
+          <div class="hero-ring hero-ring-1"></div>
+          <div class="hero-ring hero-ring-2"></div>
+        </div>
+      </div>
+
+      <!-- Wave separator -->
+      <div class="hero-wave">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"
+            fill="#fff"
+          />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         TRUST BADGES STRIP
+    ═══════════════════════════════════════════════════════ -->
+    <section class="trust-strip">
+      <div class="container">
+        <div class="trust-grid">
+          <div class="trust-item">
+            <i class="bi bi-shield-check-fill"></i>
+            <span>১০০% খাঁটি পণ্য</span>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-truck"></i>
+            <span>দ্রুত ডেলিভারি</span>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            <span>সহজ রিটার্ন পলিসি</span>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-headset"></i>
+            <span>২৪/৭ সাপোর্ট</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         POPULAR PRODUCTS SECTION
+    ═══════════════════════════════════════════════════════ -->
+    <section class="products-section" id="products">
+      <div class="container">
+
+        <div class="section-header text-center">
+          <span class="section-tag">আমাদের সংগ্রহ</span>
+          <h2 class="section-title">জনপ্রিয় পণ্যসমূহ</h2>
+          <p class="section-subtitle">
+            সরাসরি বিশ্বস্ত উৎস থেকে সংগ্রহ করা সেরা মানের পণ্য
+          </p>
+          <div class="section-divider"></div>
+        </div>
+
+        <!-- CATEGORY FILTER TABS -->
+        <div class="product-filters mb-4">
+          <button class="filter-btn active" data-filter="all">সব পণ্য</button>
+          <button class="filter-btn" data-filter="তেল">তেল</button>
+          <button class="filter-btn" data-filter="মশলা">মশলা</button>
+          <button class="filter-btn" data-filter="চিনি">চিনি</button>
+          <button class="filter-btn" data-filter="মধু">মধু</button>
+        </div>
+
+        <!-- PRODUCT GRID — populated by JS from API -->
+        <div class="row g-4" id="productsGrid">
+          <!-- Cards injected here by main.js -->
+          <div class="col-12 text-center py-5" id="productsLoader">
+            <div class="spinner-border text-warning" role="status">
+              <span class="visually-hidden">লোড হচ্ছে...</span>
+            </div>
+            <p class="mt-3 text-muted">পণ্য লোড হচ্ছে...</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="#products" class="btn btn-view-all" id="viewAllBtn">
+            সকল পণ্য দেখুন <i class="bi bi-arrow-right-circle-fill"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ABOUT SECTION
+    ═══════════════════════════════════════════════════════ -->
+    <section class="about-section" id="about">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <div class="about-image-wrapper">
+              <!--
+                ABOUT IMAGE — Place your image at:
+                ./assets/images/about-farm.jpg
+                Recommended: Farm/field photo, 600×500 px
+              -->
+              <img
+                src="./assets/images/about-farm.jpg"
+                alt="আমাদের খামার"
+                class="about-main-img"
+                onerror="this.parentElement.classList.add('about-img-fallback')"
+              />
+              <div class="about-badge-card">
+                <span class="about-badge-number">১০+</span>
+                <span class="about-badge-text">বছরের অভিজ্ঞতা</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="about-content">
+              <span class="section-tag">আমাদের সম্পর্কে</span>
+              <h2 class="section-title">কেন পরিচিত বাজার?</h2>
+              <p class="about-desc">
+                আমরা বিশ্বাস করি প্রতিটি পরিবার সেরা মানের খাঁটি পণ্য পাওয়ার
+                অধিকার রাখে। তাই আমরা সরাসরি বিশ্বস্ত কৃষক ও উৎপাদকদের কাছ থেকে
+                পণ্য সংগ্রহ করি এবং কোনো মিলাভেজাল ছাড়াই আপনার দরজায় পৌঁছে দিই।
+              </p>
+              <ul class="about-features">
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  সরাসরি কৃষক থেকে সংগ্রহ করা পণ্য
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  কোনো রাসায়নিক সংযোজন নেই
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  মান নিয়ন্ত্রণ পরীক্ষায় উত্তীর্ণ
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  সঠিক সময়ে ডেলিভারি নিশ্চিত
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ORDER MODAL
+    ═══════════════════════════════════════════════════════ -->
+    <div
+      class="modal fade"
+      id="orderModal"
+      tabindex="-1"
+      aria-labelledby="orderModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="orderModalLabel">
+              <i class="bi bi-bag-check-fill text-warning me-2"></i>
+              অর্ডার করুন
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="বন্ধ করুন"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="order-product-preview mb-4" id="orderProductPreview">
+              <!-- Populated by JS -->
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">আপনার নাম <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="orderName"
+                placeholder="আপনার পুরো নাম লিখুন"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">ফোন নম্বর <span class="text-danger">*</span></label>
+              <input
+                type="tel"
+                class="form-control"
+                id="orderPhone"
+                placeholder="01XXXXXXXXX"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">ডেলিভারি ঠিকানা <span class="text-danger">*</span></label>
+              <textarea
+                class="form-control"
+                id="orderAddress"
+                rows="3"
+                placeholder="বাড়ি নম্বর, রাস্তা, এলাকা, জেলা"
+                required
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">পরিমাণ</label>
+              <div class="qty-control">
+                <button class="qty-btn" id="qtyMinus" type="button">−</button>
+                <input
+                  type="number"
+                  class="form-control qty-input"
+                  id="orderQty"
+                  value="1"
+                  min="1"
+                  max="99"
+                />
+                <button class="qty-btn" id="qtyPlus" type="button">+</button>
+              </div>
+            </div>
+            <div class="order-total-box" id="orderTotalBox">
+              <!-- Total populated by JS -->
+            </div>
+            <div class="alert alert-success d-none" id="orderSuccess" role="alert">
+              <i class="bi bi-check-circle-fill me-2"></i>
+              <span id="orderSuccessMsg"></span>
+            </div>
+            <div class="alert alert-danger d-none" id="orderError" role="alert">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <span id="orderErrorMsg"></span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              বাতিল
+            </button>
+            <button
+              type="button"
+              class="btn btn-order-submit"
+              id="submitOrderBtn"
+            >
+              <i class="bi bi-bag-check me-2"></i>অর্ডার নিশ্চিত করুন
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════════════════════ -->
+    <footer class="site-footer" id="contact">
+      <div class="footer-top">
+        <div class="container">
+          <div class="row g-5">
+
+            <!-- COLUMN 1: BRAND & SOCIAL -->
+            <div class="col-lg-4 col-md-6">
+              <div class="footer-brand">
+                <img
+                  src="./assets/images/logo.png"
+                  alt="পরিচিত বাজার লোগো"
+                  class="footer-logo"
+                  onerror="this.style.display='none'"
+                />
+                <span class="footer-brand-text">পরিচিত বাজার</span>
+              </div>
+              <p class="footer-desc">
+                আপনার পরিবারের জন্য খাঁটি ও স্বাস্থ্যকর পণ্য সরবরাহ করাই
+                আমাদের লক্ষ্য। বিশ্বস্ত প্রতিষ্ঠান, বিশুদ্ধ পণ্য।
+              </p>
+              <div class="footer-section-label">আমাদের অনুসরণ করুন</div>
+              <div class="social-links">
+                <a
+                  href="https://facebook.com"
+                  class="social-link social-fb"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  href="https://instagram.com"
+                  class="social-link social-ig"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+                <a
+                  href="https://twitter.com"
+                  class="social-link social-tw"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Twitter / X"
+                >
+                  <i class="bi bi-twitter-x"></i>
+                </a>
+                <a
+                  href="https://youtube.com"
+                  class="social-link social-yt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                >
+                  <i class="bi bi-youtube"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- COLUMN 2: QUICK LINKS -->
+            <div class="col-lg-2 col-md-6">
+              <h5 class="footer-heading">দ্রুত লিঙ্ক</h5>
+              <ul class="footer-links">
+                <li><a href="#home"><i class="bi bi-chevron-right"></i>হোম</a></li>
+                <li><a href="#products"><i class="bi bi-chevron-right"></i>পণ্যসমূহ</a></li>
+                <li><a href="#about"><i class="bi bi-chevron-right"></i>আমাদের সম্পর্কে</a></li>
+                <li><a href="#contact"><i class="bi bi-chevron-right"></i>যোগাযোগ</a></li>
+              </ul>
+            </div>
+
+            <!-- COLUMN 3: CONTACT INFO -->
+            <div class="col-lg-3 col-md-6">
+              <h5 class="footer-heading">যোগাযোগ</h5>
+              <ul class="footer-contact-list">
+                <li>
+                  <i class="bi bi-envelope-fill"></i>
+                  <a href="mailto:mail.porichito@gmail.com">
+                    mail.porichito@gmail.com
+                  </a>
+                </li>
+                <li>
+                  <i class="bi bi-telephone-fill"></i>
+                  <a href="tel:+91020833385">+91-020-833-3859</a>
+                </li>
+                <li>
+                  <i class="bi bi-geo-alt-fill"></i>
+                  <span>ঢাকা, বাংলাদেশ</span>
+                </li>
+                <li>
+                  <i class="bi bi-clock-fill"></i>
+                  <span>সকাল ৯টা – রাত ১০টা (সাত দিন)</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- COLUMN 4: PAYMENT PARTNERS -->
+            <div class="col-lg-3 col-md-6">
+              <h5 class="footer-heading">অর্থপ্রদান পদ্ধতি</h5>
+              <p class="footer-payment-sub">আমরা যে পেমেন্ট গ্রহণ করি:</p>
+              <div class="payment-logos">
+                <!--
+                  PAYMENT LOGOS — Place your images at these paths:
+                  ./assets/images/payment/bkash.png
+                  ./assets/images/payment/nagad.png
+                  ./assets/images/payment/rocket.png
+                  ./assets/images/payment/mastercard.png
+                  Recommended size: 80×30 px each (landscape)
+                -->
+                <div class="payment-logo-item">
+                  <img
+                    src="./assets/images/payment/bkash.png"
+                    alt="bKash"
+                    class="payment-logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+                  />
+                  <span class="payment-logo-text" style="display:none">bKash</span>
+                </div>
+                <div class="payment-logo-item">
+                  <img
+                    src="./assets/images/payment/nagad.png"
+                    alt="Nagad"
+                    class="payment-logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+                  />
+                  <span class="payment-logo-text" style="display:none">Nagad</span>
+                </div>
+                <div class="payment-logo-item">
+                  <img
+                    src="./assets/images/payment/rocket.png"
+                    alt="Rocket"
+                    class="payment-logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+                  />
+                  <span class="payment-logo-text" style="display:none">Rocket</span>
+                </div>
+                <div class="payment-logo-item">
+                  <img
+                    src="./assets/images/payment/mastercard.png"
+                    alt="Mastercard"
+                    class="payment-logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+                  />
+                  <span class="payment-logo-text" style="display:none">Mastercard</span>
+                </div>
+              </div>
+              <p class="footer-secure-note">
+                <i class="bi bi-lock-fill"></i> নিরাপদ ও এনক্রিপ্টেড পেমেন্ট
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER BOTTOM BAR -->
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <p class="mb-0">
+              &copy; <span id="footerYear"></span> পরিচিত বাজার। সকল অধিকার সংরক্ষিত।
+            </p>
+            <p class="mb-0 footer-bottom-links">
+              <a href="#">গোপনীয়তা নীতি</a>
+              <span class="mx-2">|</span>
+              <a href="#">শর্তাবলী</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════
+         CART DRAWER (slides in from right)
+    ═══════════════════════════════════════════════════════ -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-label="শপিং কার্ট">
+      <div class="cart-drawer-header">
+        <div class="cart-drawer-title">
+          <i class="bi bi-cart3"></i>
+          <span>আমার কার্ট</span>
+          <span class="cart-drawer-count" id="cartDrawerCount">0টি পণ্য</span>
+        </div>
+        <button class="cart-close-btn" id="cartCloseBtn" aria-label="কার্ট বন্ধ করুন">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="cart-empty" id="cartEmpty">
+        <div class="cart-empty-icon">🛒</div>
+        <p class="cart-empty-title">কার্ট খালি আছে</p>
+        <p class="cart-empty-sub">পণ্য যোগ করুন এবং অর্ডার করুন</p>
+        <button class="btn btn-cart-shop" id="cartShopNowBtn">
+          <i class="bi bi-bag-fill me-2"></i>পণ্য দেখুন
+        </button>
+      </div>
+      <div class="cart-items-wrapper" id="cartItemsWrapper" style="display:none">
+        <ul class="cart-items-list" id="cartItemsList"></ul>
+      </div>
+      <div class="cart-drawer-footer" id="cartDrawerFooter" style="display:none">
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span>উপমোট</span>
+            <span id="cartSubtotal">৳০</span>
+          </div>
+          <div class="cart-summary-row cart-summary-total">
+            <span>মোট মূল্য</span>
+            <span id="cartTotal">৳০</span>
+          </div>
+        </div>
+        <button class="btn btn-checkout" id="checkoutBtn">
+          <i class="bi bi-bag-check-fill me-2"></i>চেকআউট করুন
+        </button>
+        <button class="btn btn-clear-cart" id="clearCartBtn">
+          <i class="bi bi-trash3 me-1"></i>কার্ট খালি করুন
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════════════
+         CHECKOUT MODAL
+    ═══════════════════════════════════════════════════════ -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="checkoutModalLabel">
+              <i class="bi bi-bag-check-fill text-warning me-2"></i>চেকআউট
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <h6 class="checkout-section-title"><i class="bi bi-person-fill me-2"></i>ডেলিভারি তথ্য</h6>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">আপনার নাম <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="coName" placeholder="পুরো নাম লিখুন" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">ফোন নম্বর <span class="text-danger">*</span></label>
+                  <input type="tel" class="form-control" id="coPhone" placeholder="01XXXXXXXXX" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">ডেলিভারি ঠিকানা <span class="text-danger">*</span></label>
+                  <textarea class="form-control" id="coAddress" rows="3" placeholder="বাড়ি নম্বর, রাস্তা, এলাকা, জেলা"></textarea>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h6 class="checkout-section-title"><i class="bi bi-receipt me-2"></i>অর্ডার সারসংক্ষেপ</h6>
+                <ul class="checkout-summary-list" id="checkoutSummaryList"></ul>
+                <div class="checkout-total-box">
+                  <span>মোট মূল্য</span>
+                  <span class="checkout-total-value" id="checkoutTotalValue">৳০</span>
+                </div>
+              </div>
+            </div>
+            <div class="alert alert-success d-none mt-3" id="coSuccess">
+              <i class="bi bi-check-circle-fill me-2"></i><span id="coSuccessMsg"></span>
+            </div>
+            <div class="alert alert-danger d-none mt-3" id="coError">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i><span id="coErrorMsg"></span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">বাতিল</button>
+            <button type="button" class="btn btn-order-submit" id="coSubmitBtn">
+              <i class="bi bi-bag-check me-2"></i>অর্ডার নিশ্চিত করুন
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="./js/main.js"></script>
+  
+    <!-- ═══════════════════════════════════════════════════════
+         PROFILE MODAL
+    ═══════════════════════════════════════════════════════ -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:20px;border:none">
+          <div class="modal-header" style="background:#fff4eb;border-bottom:1px solid #f0d9c8;border-radius:20px 20px 0 0;padding:18px 24px">
+            <h5 class="modal-title" style="font-weight:700;font-size:1rem">
+              <i class="bi bi-person-circle text-warning me-2"></i>আমার প্রোফাইল
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" style="padding:24px">
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:0.88rem">পুরো নাম</label>
+              <input type="text" class="form-control" id="profileName" style="border-radius:10px" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:0.88rem">ইমেইল</label>
+              <input type="email" class="form-control" id="profileEmail" style="border-radius:10px" disabled />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:0.88rem">ফোন নম্বর</label>
+              <input type="tel" class="form-control" id="profilePhone" style="border-radius:10px" />
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label fw-semibold" style="font-size:0.88rem">জেলা</label>
+                <input type="text" class="form-control" id="profileDistrict" style="border-radius:10px" />
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold" style="font-size:0.88rem">থানা</label>
+                <input type="text" class="form-control" id="profileThana" style="border-radius:10px" />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold" style="font-size:0.88rem">ঠিকানা</label>
+              <textarea class="form-control" id="profileAddress" rows="2" style="border-radius:10px;resize:none"></textarea>
+            </div>
+            <!-- Change password -->
+            <div style="border-top:1px solid #f0ece8;margin:16px 0 14px;padding-top:14px">
+              <p style="font-weight:700;font-size:0.88rem;margin-bottom:10px;color:#1a1a1a">
+                <i class="bi bi-shield-lock-fill text-warning me-1"></i>পাসওয়ার্ড পরিবর্তন
+              </p>
+              <input type="password" class="form-control mb-2" id="profileCurPass" placeholder="বর্তমান পাসওয়ার্ড" style="border-radius:10px" />
+              <input type="password" class="form-control" id="profileNewPass" placeholder="নতুন পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" style="border-radius:10px" />
+            </div>
+            <div id="profileMsg" class="d-none alert" style="border-radius:10px;font-size:0.87rem;padding:10px 14px"></div>
+          </div>
+          <div class="modal-footer" style="background:#fff4eb;border-top:1px solid #f0d9c8;border-radius:0 0 20px 20px;padding:14px 24px">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">বাতিল</button>
+            <button type="button" class="btn" style="background:#e07b2e;color:#fff;border-radius:10px;font-weight:600" onclick="saveProfile()">
+              <i class="bi bi-check-lg me-1"></i>সংরক্ষণ করুন
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ORDER HISTORY MODAL
+    ═══════════════════════════════════════════════════════ -->
+    <div class="modal fade" id="ordersModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius:20px;border:none">
+          <div class="modal-header" style="background:#fff4eb;border-bottom:1px solid #f0d9c8;border-radius:20px 20px 0 0;padding:18px 24px">
+            <h5 class="modal-title" style="font-weight:700;font-size:1rem">
+              <i class="bi bi-bag-check-fill text-warning me-2"></i>আমার অর্ডার সমূহ
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" style="padding:24px;max-height:60vh;overflow-y:auto" id="ordersModalBody">
+            <div class="text-center py-4">
+              <div class="spinner-border text-warning" role="status"></div>
+              <p class="mt-2 text-muted">লোড হচ্ছে...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         AUTH JAVASCRIPT
+    ═══════════════════════════════════════════════════════ -->
+    <script>
+    /* ── Auth state ───────────────────────────────────── */
+    (function initAuth() {
+      const token = localStorage.getItem('pb_user_token');
+      const user  = (() => { try { return JSON.parse(localStorage.getItem('pb_user')); } catch { return null; } })();
+
+      if (token && user) {
+        showLoggedIn(user);
+        // Validate token silently
+        fetch(window.location.origin + '/api/auth/me', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        }).then(r => r.json()).then(d => {
+          if (d.success) {
+            localStorage.setItem('pb_user', JSON.stringify(d.user));
+            showLoggedIn(d.user);
+          } else { doLogout(); }
+        }).catch(() => {});
+      }
+    })();
+
+    function showLoggedIn(user) {
+      document.getElementById('guestButtons').classList.add('d-none');
+      const menu = document.getElementById('userMenu');
+      menu.classList.remove('d-none');
+      const initial = (user.fullName || user.full_name || 'U').charAt(0).toUpperCase();
+      document.getElementById('userAvatar').textContent      = initial;
+      document.getElementById('userDisplayName').textContent = (user.fullName || user.full_name || '').split(' ')[0];
+      document.getElementById('dropdownName').textContent    = user.fullName || user.full_name || '';
+      document.getElementById('dropdownEmail').textContent   = user.email || '';
+    }
+
+    function toggleUserDropdown() {
+      const dd = document.getElementById('userDropdown');
+      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+    }
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('userMenu')?.contains(e.target)) {
+        const dd = document.getElementById('userDropdown');
+        if (dd) dd.style.display = 'none';
+      }
+    });
+
+    function doLogout() {
+      localStorage.removeItem('pb_user_token');
+      localStorage.removeItem('pb_user');
+      document.getElementById('userMenu').classList.add('d-none');
+      document.getElementById('guestButtons').classList.remove('d-none');
+      const dd = document.getElementById('userDropdown');
+      if (dd) dd.style.display = 'none';
+    }
+
+    /* ── Profile modal ───────────────────────────────── */
+    let profileModalBs;
+    function openProfileModal() {
+      const dd = document.getElementById('userDropdown');
+      if (dd) dd.style.display = 'none';
+      const user = (() => { try { return JSON.parse(localStorage.getItem('pb_user')); } catch { return null; } })();
+      if (!user) return;
+      document.getElementById('profileName').value     = user.fullName || user.full_name || '';
+      document.getElementById('profileEmail').value    = user.email    || '';
+      document.getElementById('profilePhone').value    = user.phone    || '';
+      document.getElementById('profileDistrict').value = user.district || '';
+      document.getElementById('profileThana').value    = user.thana    || '';
+      document.getElementById('profileAddress').value  = user.address  || '';
+      document.getElementById('profileCurPass').value  = '';
+      document.getElementById('profileNewPass').value  = '';
+      document.getElementById('profileMsg').classList.add('d-none');
+      profileModalBs = profileModalBs || new bootstrap.Modal(document.getElementById('profileModal'));
+      profileModalBs.show();
+    }
+
+    async function saveProfile() {
+      const token = localStorage.getItem('pb_user_token');
+      const msg   = document.getElementById('profileMsg');
+      msg.classList.add('d-none');
+
+      const payload = {
+        fullName: document.getElementById('profileName').value.trim(),
+        phone:    document.getElementById('profilePhone').value.trim() || undefined,
+        district: document.getElementById('profileDistrict').value.trim() || undefined,
+        thana:    document.getElementById('profileThana').value.trim() || undefined,
+        address:  document.getElementById('profileAddress').value.trim() || undefined,
+      };
+
+      try {
+        const res  = await fetch(window.location.origin + '/api/auth/profile', {
+          method: 'PUT', headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('pb_user', JSON.stringify(data.user));
+          showLoggedIn(data.user);
+          msg.className = 'alert alert-success'; msg.textContent = data.message;
+          msg.classList.remove('d-none');
+        } else {
+          msg.className = 'alert alert-danger'; msg.textContent = data.message;
+          msg.classList.remove('d-none');
+        }
+      } catch { msg.className='alert alert-danger'; msg.textContent='সমস্যা হয়েছে।'; msg.classList.remove('d-none'); }
+
+      // Change password if fields filled
+      const curPass = document.getElementById('profileCurPass').value;
+      const newPass = document.getElementById('profileNewPass').value;
+      if (curPass && newPass) {
+        try {
+          const r = await fetch(window.location.origin + '/api/auth/change-password', {
+            method: 'PUT', headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token },
+            body: JSON.stringify({ currentPassword: curPass, newPassword: newPass }),
+          });
+          const d = await r.json();
+          msg.className = d.success ? 'alert alert-success' : 'alert alert-danger';
+          msg.textContent = d.message; msg.classList.remove('d-none');
+        } catch {}
+      }
+    }
+
+    /* ── Order history modal ─────────────────────────── */
+    let ordersModalBs;
+    async function openOrderHistory() {
+      const dd = document.getElementById('userDropdown');
+      if (dd) dd.style.display = 'none';
+      ordersModalBs = ordersModalBs || new bootstrap.Modal(document.getElementById('ordersModal'));
+      ordersModalBs.show();
+
+      const body  = document.getElementById('ordersModalBody');
+      const token = localStorage.getItem('pb_user_token');
+      body.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-warning" role="status"></div><p class="mt-2 text-muted">লোড হচ্ছে...</p></div>';
+
+      try {
+        const res  = await fetch(window.location.origin + '/api/auth/orders', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (!data.success || !data.data.length) {
+          body.innerHTML = '<div class="text-center py-5"><div style="font-size:3rem">📦</div><p class="text-muted mt-2">এখনো কোনো অর্ডার নেই।</p></div>';
+          return;
+        }
+        const statusColors = { pending:'#f59e0b',confirmed:'#3b82f6',shipped:'#8b5cf6',delivered:'#22c55e',cancelled:'#ef4444' };
+        const statusLabels = { pending:'অপেক্ষারত',confirmed:'নিশ্চিত',shipped:'পাঠানো হয়েছে',delivered:'ডেলিভারি সম্পন্ন',cancelled:'বাতিল' };
+        body.innerHTML = data.data.map(o => `
+          <div style="background:#fff7f0;border:1px solid #f0d9c8;border-radius:14px;padding:16px;margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+              <div>
+                <p style="font-family:monospace;font-size:0.78rem;color:#e07b2e;margin:0">${o.orderRef}</p>
+                <p style="font-weight:700;margin:4px 0 2px;font-size:0.95rem">${o.productName}</p>
+                <p style="font-size:0.8rem;color:#888;margin:0">পরিমাণ: ${o.quantity} | মূল্য: ৳${parseFloat(o.totalPrice).toLocaleString('bn-BD')}</p>
+              </div>
+              <div style="text-align:right">
+                <span style="background:${statusColors[o.status]}22;color:${statusColors[o.status]};border:1px solid ${statusColors[o.status]}44;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:600">${statusLabels[o.status] || o.status}</span>
+                <p style="font-size:0.75rem;color:#aaa;margin:6px 0 0">${new Date(o.createdAt).toLocaleDateString('bn-BD')}</p>
+              </div>
+            </div>
+          </div>`).join('');
+      } catch {
+        body.innerHTML = '<div class="text-center py-4 text-danger">অর্ডার লোড করতে সমস্যা হয়েছে।</div>';
+      }
+    }
+    </script>
+
+  </body>
+</html>

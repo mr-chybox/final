@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment — NEVER commit the real .env
+.env
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

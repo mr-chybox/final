@@ -302,4 +302,36 @@ const getDashboard = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll, getById, updateStatus, getDashboard };
+// ─────────────────────────────────────────────────────────────
+// DELETE /api/admin/orders/:id — permanently delete an order (admin only)
+// ─────────────────────────────────────────────────────────────
+const remove = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ success: false, message: "অবৈধ অর্ডার আইডি।" });
+    }
+
+    const { rows } = await pool.query(
+      "DELETE FROM orders WHERE id = $1 RETURNING order_ref",
+      [id]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({ success: false, message: "অর্ডার পাওয়া যায়নি।" });
+    }
+
+    res.json({
+      success: true,
+      message: `অর্ডার "${rows[0].order_ref}" ডিলিট করা হয়েছে।`,
+    });
+  } catch (err) {
+    console.error("[Orders.remove]", err.message);
+    res.status(500).json({
+      success: false,
+      message: "অর্ডার ডিলিট করতে সমস্যা হয়েছে।",
+    });
+  }
+};
+
+module.exports = { create, getAll, getById, updateStatus, getDashboard, remove };

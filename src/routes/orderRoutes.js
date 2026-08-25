@@ -60,6 +60,9 @@ router.get("/admin/orders/:id", requireAdmin, orderCtrl.getById);
 // PATCH /api/admin/orders/:id/status  — update status or add note
 router.patch("/admin/orders/:id/status", requireAdmin, orderCtrl.updateStatus);
 
+// DELETE /api/admin/orders/:id — permanently delete an order
+router.delete("/admin/orders/:id", requireAdmin, orderCtrl.remove);
+
 // ─── Admin product management ─────────────────────────────────
 
 // POST   /api/admin/products — create new product

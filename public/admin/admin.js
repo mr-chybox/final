@@ -219,7 +219,7 @@ async function loadDashboard() {
 function renderRecentOrders(orders) {
   const tbody = $("recentOrdersTbody");
   if (!orders.length) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon"><i class="bi bi-inbox"></i></div><p>কোনো অর্ডার নেই।</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon"><i class="bi bi-inbox"></i></div><p>কোনো অর্ডার নেই।</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = orders.map(o => `
@@ -231,6 +231,16 @@ function renderRecentOrders(orders) {
       <td style="font-family:var(--font-en);font-weight:600">${fmtCurrency(o.totalPrice)}</td>
       <td>${statusBadge(o.status)}</td>
       <td style="font-family:var(--font-en);color:var(--text-mid);font-size:0.82rem">${fmtDate(o.createdAt)}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-icon btn-sm" onclick="openOrderModal(${o.id})" title="বিবরণ ও আপডেট">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-danger btn-icon btn-sm" onclick="deleteOrder(${o.id},'${o.orderRef}')" title="অর্ডার ডিলিট করুন">
+            <i class="bi bi-trash3-fill"></i>
+          </button>
+        </div>
+      </td>
     </tr>`).join("");
 }
 
@@ -281,9 +291,14 @@ function renderOrdersTable(orders) {
       <td>${statusBadge(o.status)}</td>
       <td style="font-family:var(--font-en);color:var(--text-mid);font-size:0.82rem;white-space:nowrap">${fmtDate(o.createdAt)}</td>
       <td>
-        <button class="btn btn-outline btn-icon btn-sm" onclick="openOrderModal(${o.id})" title="বিবরণ ও আপডেট">
-          <i class="bi bi-pencil-square"></i>
-        </button>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-icon btn-sm" onclick="openOrderModal(${o.id})" title="বিবরণ ও আপডেট">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-danger btn-icon btn-sm" onclick="deleteOrder(${o.id},'${o.orderRef}')" title="অর্ডার ডিলিট করুন">
+            <i class="bi bi-trash3-fill"></i>
+          </button>
+        </div>
       </td>
     </tr>`).join("");
 }
@@ -427,6 +442,20 @@ $("orderModalSave").addEventListener("click", async () => {
 ["orderModalClose","orderModalCancel"].forEach(id =>
   $(id).addEventListener("click", () => closeModal("orderModal"))
 );
+
+// ── Delete order ─────────────────────────────────────────
+window.deleteOrder = async (id, orderRef) => {
+  if (!confirm(`অর্ডার "${orderRef}" স্থায়ীভাবে ডিলিট করতে চান? এই কাজটি ফেরানো যাবে না।`)) return;
+  try {
+    const data = await apiFetch(`/admin/orders/${id}`, { method: "DELETE" });
+    if (!data?.success) throw new Error(data?.message);
+    showToast(data.message || "অর্ডার ডিলিট হয়েছে।");
+    loadOrders();
+    loadDashboard();
+  } catch (err) {
+    showToast(err.message || "অর্ডার ডিলিট করতে সমস্যা হয়েছে।", "error");
+  }
+};
 
 /* ═══════════════════════════════════════════════════════════
    4. PRODUCTS PAGE
